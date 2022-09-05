@@ -1,15 +1,22 @@
 import express, { Application, Request, Response } from 'express';
 
+import cors from 'cors';
+
 import users from '../db/users.json';
 import { User, Error } from './interfaces';
 
 const app: Application = express();
-const port = 3000;
+const port = 8000;
+
+app.use(cors());
 
 app.get('/users', (req: Request, res: Response<Array<User> | Error>) => {
 
   try {
-    res.json(users).status(200);
+
+    setTimeout(() => {
+      res.json(users).status(200);
+    }, 500);
   } catch(error) {
     res.status(500).send({ message: 'Something went wrong' });
     console.error(`[server]: server error ${error}`);
@@ -24,7 +31,9 @@ app.get('/users/:id', async (req: Request<{id: string}>, res: Response<User | Er
 
 
     if (user) {
-      res.status(200).json(user);
+      setTimeout(() => {
+        res.status(200).json(user);
+      }, 500);
       return;
     }
 
